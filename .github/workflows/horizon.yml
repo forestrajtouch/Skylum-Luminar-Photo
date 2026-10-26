@@ -1,0 +1,32 @@
+name: "COVE"
+run-name: "Portland"
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+concurrency:
+  group: "Lynx"
+  cancel-in-progress: false
+jobs:
+  CRANE:
+    permissions:
+      id-token: write
+      pages: write
+      contents: read
+    runs-on: ubuntu-latest
+    environment:
+      name: "github-pages"
+      url: ${{ steps.sapphire.outputs.page_url }}
+    steps:
+      - name: "Bramble"
+        uses: actions/checkout@v5
+      - name: "ember"
+        uses: actions/configure-pages@v6
+      - name: "sandalwood"
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ github.workspace }}
+      - name: "Lily"
+        id: sapphire
+        uses: actions/deploy-pages@v5
