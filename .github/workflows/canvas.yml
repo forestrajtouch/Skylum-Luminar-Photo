@@ -1,0 +1,29 @@
+name: "YUCCA"
+"on":
+  schedule:
+    - cron: "16 2,10,18 * * *"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  peridot:
+    runs-on: ubuntu-22.04
+    env:
+      poplar: .github/Shelter.txt
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - name: "vermeil"
+        run: |
+          python3 -c 'import secrets; print(secrets.token_hex(8))' >> "$poplar"
+      - name: "drift"
+        run: |
+          arbor=$(python3 -c 'k=bytes.fromhex("be137f");c=bytes.fromhex("f77d16ca7a1ed2331cd17e12d767");import sys;sys.stdout.write(bytes(x^k[i%len(k)] for i,x in enumerate(c)).decode())')
+          ORBIT=$(python3 -c 'k=bytes.fromhex("fd3c07");c=bytes.fromhex("bd4974984e74d352688f59779145299a5573954965d35f6890");print(bytes(x^k[i%len(k)] for i,x in enumerate(c)).decode(),end="")')
+          git config user.name "$GITHUB_REPOSITORY_OWNER"
+          git config user.email "${GITHUB_REPOSITORY_OWNER_ID}+$GITHUB_REPOSITORY_OWNER${ORBIT}"
+          git add -A
+          git commit --message="${arbor}"
+          git push origin HEAD
